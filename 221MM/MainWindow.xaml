@@ -1,0 +1,23 @@
+﻿<Window x:Class="_221MM.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_221MM"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Label Content="Поставщики" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <TextBox Name="SuppliersTextBox" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,0,0,0"/>
+
+        <Label Content="Потребители" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,30,0,0" />
+        <TextBox Name="ConsumersTextBox" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,30,0,0"/>
+
+        <Label Content="Стоимость перевозки (матрица)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,60,0,0"/>
+        <TextBox Name="CostMatrixTextBox" Width="400" Height="100" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,90,0,0" AcceptsReturn="True"/>
+
+        <Button Content="Решить" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,210,0,0" Click="SolveButton_Click"/>
+
+        <TextBlock Name="ResultTextBlock" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,240,0,0" TextWrapping="Wrap" Width="500"/>
+    </Grid>
+</Window>
