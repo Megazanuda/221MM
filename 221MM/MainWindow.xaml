@@ -1,23 +1,22 @@
 ﻿<Window x:Class="_221MM.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:_221MM"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Транспортная задача" Height="450" Width="600">
     <Grid>
-        <Label Content="Поставщики" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <TextBox Name="SuppliersTextBox" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,0,0,0"/>
+        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0">Поставщики:</TextBlock>
+        <TextBox Name="SuppliersTextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="100,10,0,0" Width="150" Height="25"/>
 
-        <Label Content="Потребители" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,30,0,0" />
-        <TextBox Name="ConsumersTextBox" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,30,0,0"/>
+        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,40,0,0">Потребители:</TextBlock>
+        <TextBox Name="ConsumersTextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="100,40,0,0" Width="150" Height="25"/>
 
-        <Label Content="Стоимость перевозки (матрица)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,60,0,0"/>
-        <TextBox Name="CostMatrixTextBox" Width="400" Height="100" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,90,0,0" AcceptsReturn="True"/>
+        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,70,0,0">Матрица стоимостей:</TextBlock>
+        <TextBox Name="CostMatrixTextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="100,70,0,0" Width="150" Height="60" AcceptsReturn="True"/>
 
-        <Button Content="Решить" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,210,0,0" Click="SolveButton_Click"/>
+        <RadioButton Name="NorthWestButton" Content="Метод северо-западного угла" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,150,0,0"/>
+        <RadioButton Name="MinElementsButton" Content="Метод минимальных элементов" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,180,0,0"/>
 
-        <TextBlock Name="ResultTextBlock" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,240,0,0" TextWrapping="Wrap" Width="500"/>
+        <Button Name="SolveButton" Content="Решить задачу" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,220,0,0" Width="150" Height="30" Click="SolveButton_Click"/>
+
+        <TextBlock Name="ResultTextBlock" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="300,10,10,10" Width="250" Height="300" TextWrapping="Wrap"/>
     </Grid>
 </Window>
