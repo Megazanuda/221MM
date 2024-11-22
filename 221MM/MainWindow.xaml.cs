@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace _221MM
 {
@@ -22,17 +11,19 @@ namespace _221MM
             InitializeComponent();
         }
 
+
+        public int[] suppliers;
+        public int[] consumers;
+
         private void SolveButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 // Считывание данных
-                var suppliers = SuppliersTextBox.Text.Split(',').Select(int.Parse).ToArray();
-                var consumers = ConsumersTextBox.Text.Split(',').Select(int.Parse).ToArray();
-                
+                suppliers = SuppliersTextBox.Text.Split(',').Select(int.Parse).ToArray();
+                consumers = ConsumersTextBox.Text.Split(',').Select(int.Parse).ToArray();
+
                 var costMatrix = ParseCostMatrix(CostMatrixTextBox.Text, consumers, suppliers);
-               
-                
 
                 // Проверка на соответствие
                 if (suppliers.Length == 0 || consumers.Length == 0 || costMatrix.GetLength(0) == 0 || costMatrix.GetLength(1) == 0)
@@ -67,21 +58,23 @@ namespace _221MM
             }
         }
 
-        private int[,] ParseCostMatrix(string input, int[] consumers, int[] suppliers)
+        private int[,] ParseCostMatrix(string input, int[] consumers1, int[] suppliers1)
         {
-            
-
             var lines = input.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-             
             int size = lines.Length;
 
-            if (suppliers.Sum() == consumers.Sum())
+            // Проверка на сбалансированность задачи
+            int totalSuppliers = suppliers1.Sum();
+            int totalConsumers = consumers1.Sum();
+
+            if (totalSuppliers == totalConsumers)
             {
-                var matrix = new int[size, consumers.Length];
+                // Если задача сбалансирована, то просто заполняем матрицу
+                var matrix = new int[size, consumers1.Length];
                 for (int i = 0; i < size; i++)
                 {
                     var values = lines[i].Split(',').Select(int.Parse).ToArray();
-                    for (int j = 0; j < consumers.Length; j++)
+                    for (int j = 0; j < consumers1.Length; j++)
                     {
                         matrix[i, j] = values[j];
                     }
@@ -90,43 +83,59 @@ namespace _221MM
             }
             else
             {
-                if (consumers.Sum() - consumers.Sum() > 0)
+                // Добавляем фиктивную строку или столбец
+                if (totalSuppliers > totalConsumers)
                 {
-                    var matrix = new int[size + 1, consumers.Length];
+                    // Добавляем фиктивного потребителя
+                    var matrix = new int[size, consumers1.Length + 1];
                     for (int i = 0; i < size; i++)
                     {
                         var values = lines[i].Split(',').Select(int.Parse).ToArray();
-                        for (int j = 0; j < consumers.Length; j++)
+                        for (int j = 0; j < consumers1.Length; j++)
                         {
                             matrix[i, j] = values[j];
                         }
                     }
+                    // Устанавливаем нулевые затраты для фиктивного потребителя
+                    for (int i = 0; i < size; i++)
+                    {
+                        matrix[i, consumers1.Length] = 0;
+                    }
+                    
+                    Array.Resize(ref consumers, consumers.Length + 1);
+                    consumers[consumers.Length - 1] = totalSuppliers - totalConsumers;
                     return matrix;
                 }
                 else
                 {
-                    var matrix = new int[size, consumers.Length+1];
+                    // Добавляем фиктивного поставщика
+                    var matrix = new int[size + 1, consumers1.Length];
                     for (int i = 0; i < size; i++)
                     {
                         var values = lines[i].Split(',').Select(int.Parse).ToArray();
-                        for (int j = 0; j < consumers.Length; j++)
+                        for (int j = 0; j < consumers1.Length; j++)
                         {
                             matrix[i, j] = values[j];
                         }
                     }
+                    // Устанавливаем нулевые затраты для фиктивного поставщика
+                    for (int j = 0; j < consumers1.Length; j++)
+                    {
+                        matrix[size, j] = 0;
+                    }
+                    Array.Resize(ref suppliers, suppliers.Length + 1);
+                    suppliers[suppliers.Length - 1] = totalConsumers - totalSuppliers;
                     return matrix;
                 }
             }
-            
-
-           
         }
 
         // Метод северо-западного угла
         private int[,] SolveTransportationProblemNorthWest(int[] suppliers, int[] consumers, int[,] costMatrix)
         {
-            int m = suppliers.Length;
-            int n = consumers.Length;
+
+            int n = costMatrix.GetLength(1);
+            int m = costMatrix.GetLength(0);
             int[,] result = new int[m, n];
 
             int i = 0, j = 0;
@@ -137,7 +146,6 @@ namespace _221MM
                 result[i, j] = shipment;
                 suppliers[i] -= shipment;
                 consumers[j] -= shipment;
-
 
                 if (suppliers[i] == 0) i++;
                 if (consumers[j] == 0) j++;
